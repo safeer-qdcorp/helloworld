@@ -5,10 +5,6 @@ items:
 - apiVersion: v1
   kind: Service
   metadata:
-    annotations:
-      fabric8.io/ingress.annotations: |-
-        ingress.kubernetes.io/force-ssl-redirect: false
-        kubernetes.io/ingress.class: {{ .Values.helloworld.service.ingressClass }}
     labels:
       expose: "true"
       app: {{ template "fullname" . }}
@@ -18,10 +14,11 @@ items:
       version: 1.0.0
     name: helloworld
   spec:
+    type: NodePort
     ports:
-    - name: http
-      port: 80
-      protocol: TCP
+    - port: 80
       targetPort: 80
+      nodePort: 30001
+      name: http
     selector:
       app: {{ template "fullname" . }}
